@@ -6,6 +6,7 @@ Created on Wed Jul 15 16:56:46 2015
 """
 
 import Tkinter as tk
+import numpy as np
 import tkMessageBox
 import colorsys
 from  GridEyeKit import GridEYEKit
@@ -76,9 +77,72 @@ class GridEYE_Viewer():
         self.MINTEMP = tk.Scale(self.frameElements, from_=-20, to=120, resolution =0.25)
         self.MINTEMP.set(27)
         self.MINTEMP.pack()
-        
+
+
+        """Initialize data collection buttons and input boxes"""
+        self.dataCollectionElements = tk.Frame(master=self.tkroot, bg='white')
+        self.dataCollectionElements.place(x=520, y=5, width=350, height=400)
+
+        # Label Name
+        self.labelDataName = tk.Label(master=self.dataCollectionElements, text="Name")
+        self.labelDataName.grid(row=0)
+        self.labelEntry = tk.Entry(master=self.dataCollectionElements)
+        self.labelEntry.grid(row=0, column=1)
+
+        # Height from ground
+        self.labelHeight = tk.Label(master=self.dataCollectionElements, text="Height from ground (y)")
+        self.labelHeight.grid(row=1)
+        self.labelHeightEntry = tk.Entry(master=self.dataCollectionElements)
+        self.labelHeightEntry.grid(row=1, column=1)
+
+        # Average Temp
+        self.averageTempInfoLable = tk.Label(master=self.dataCollectionElements, text="Average Temperature")
+        self.averageTempInfoLable.grid(row=2)
+        self.averageTempLable = tk.Label(master=self.dataCollectionElements, text="NA")
+        self.averageTempLable.grid(row=2, column=1)
+        self.averageTempCalcButton = tk.Button(master=self.dataCollectionElements, text='Calculate', bg='white',
+                                 command=self.calculateAvgTemp)
+        self.averageTempCalcButton.grid(row=2, column=2)
+
+        # Distance to object vert, hor
+        self.distanceToObjectInfoLabel = tk.Label(master=self.dataCollectionElements, text="Distane to the object")
+        self.distanceToObjectInfoLabel.grid(row=3)
+
+        self.distanceZLabel = tk.Label(master=self.dataCollectionElements, text="z:")
+        self.distanceZLabel.grid(row=4)
+        self.distanceZEntry = tk.Entry(master=self.dataCollectionElements)
+        self.distanceZEntry.grid(row=4, column=1)
+
+        self.distanceXLabel = tk.Label(master=self.dataCollectionElements, text="x:")
+        self.distanceXLabel.grid(row=5)
+        self.distanceXEntry = tk.Entry(master=self.dataCollectionElements)
+        self.distanceXEntry.grid(row=5, column=1)
+
+        # save
+        self.saveButton = tk.Button(master=self.dataCollectionElements, text='Save', bg='white',
+                                 command=self.saveData)
+        self.saveButton.grid(row=6, column=2)
+        # Clear Button
+        self.clearButton = tk.Button(master=self.dataCollectionElements, text='Reset', bg='white',
+                                 command=self.resetEntries)
+        self.clearButton.grid(row=6, column=1)
         self.kit = GridEYEKit()
-                 
+
+    def calculateAvgTemp(self):
+        self.averageTempLable.config(text=np.average(self.get_tarr()))
+
+    def saveData(self):
+        with open("dataset.csv", "a") as dataset:
+            dataset.write(self.labelEntry.get() + "," +
+                          self.labelHeightEntry.get() + "," +
+                          str(self.averageTempLable.cget("text")) + "," +
+                          self.distanceZEntry.get() + "," +
+                          self.distanceXEntry.get() + "," +
+                          ",".join(map(str, self.get_tarr())) + "\n")
+
+    def resetEntries(self):
+        asd = 5
+
     def exitwindow(self):
         """ if windwow is clsoed, serial connection has to be closed!"""
         self.kit.close()
@@ -142,6 +206,6 @@ class GridEYE_Viewer():
 
 root = tk.Tk()
 root.title('Grid-Eye Viewer')
-root.geometry('500x450')        
+root.geometry('900x450')
 Window = GridEYE_Viewer(root)
 root.mainloop()
