@@ -9,10 +9,10 @@ import Tkinter as tk
 import numpy as np
 import tkMessageBox
 import colorsys
-from  GridEyeKit import GridEYEKit
+from GridEyeKit import GridEYEKit
 
 # Grid Eye related numbers
-
+import bruteForceSearch as bts
 
 
 class GridEYE_Viewer():
@@ -128,6 +128,15 @@ class GridEYE_Viewer():
         self.clearButton.grid(row=6, column=1)
         self.kit = GridEYEKit()
 
+        # Brute Force button
+        self.bruteForce = tk.Button(master=self.dataCollectionElements, text='Brute', bg='white',
+                                    command=self.bruteForceSearch)
+        self.bruteForce.grid(row=7)
+        self.bruteLabel = tk.Label(master=self.dataCollectionElements)
+        self.bruteLabel.grid(row=7, column=1)
+
+    def bruteForceSearch(self):
+        self.bruteLabel.config(text=', '.join(bts.getMostSimilar(self.get_tarr())))
     def calculateAvgTemp(self):
         self.averageTempLable.config(text=np.average(self.get_tarr()))
 
