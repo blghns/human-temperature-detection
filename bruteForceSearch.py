@@ -1,4 +1,5 @@
 import numpy as np
+import sklearn as sk
 import csv
 
 
@@ -12,12 +13,6 @@ def dataParser():
     data = []
     with open('dataset.csv', 'rb') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
-        # self.labelEntry.get() + "," +
-        # self.labelHeightEntry.get() + "," +
-        # str(self.averageTempLable.cget("text")) + "," +
-        # self.distanceZEntry.get() + "," +
-        # self.distanceXEntry.get() + "," +
-        # ",".join(map(str, self.get_tarr())) + "\n")
         for row in reader:
             name = row[0]
             height = row[1]

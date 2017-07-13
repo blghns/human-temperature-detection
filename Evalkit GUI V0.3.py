@@ -13,7 +13,7 @@ from GridEyeKit import GridEYEKit
 
 # Grid Eye related numbers
 import bruteForceSearch as bts
-
+import kdNeighborSearch as kds
 
 class GridEYE_Viewer():
 
@@ -81,7 +81,7 @@ class GridEYE_Viewer():
 
         """Initialize data collection buttons and input boxes"""
         self.dataCollectionElements = tk.Frame(master=self.tkroot, bg='white')
-        self.dataCollectionElements.place(x=520, y=5, width=350, height=400)
+        self.dataCollectionElements.place(x=520, y=5, width=450, height=400)
 
         # Label Name
         self.labelDataName = tk.Label(master=self.dataCollectionElements, text="Name")
@@ -135,8 +135,19 @@ class GridEYE_Viewer():
         self.bruteLabel = tk.Label(master=self.dataCollectionElements)
         self.bruteLabel.grid(row=7, column=1)
 
+        # KD-search
+        self.kdSearch = tk.Button(master=self.dataCollectionElements, text='KdSearch', bg='white',
+                                  command=self.kdSearch)
+        self.kdSearch.grid(row=8)
+        self.kdSearchLabel = tk.Label(master=self.dataCollectionElements)
+        self.kdSearchLabel.grid(row=8, column=1)
+
+    def kdSearch(self):
+        self.kdSearchLabel.config(text=kds.getMostSimilar(self.get_tarr()))
+
     def bruteForceSearch(self):
         self.bruteLabel.config(text=', '.join(bts.getMostSimilar(self.get_tarr())))
+
     def calculateAvgTemp(self):
         self.averageTempLable.config(text=np.average(self.get_tarr()))
 
@@ -215,6 +226,6 @@ class GridEYE_Viewer():
 
 root = tk.Tk()
 root.title('Grid-Eye Viewer')
-root.geometry('900x450')
+root.geometry('900x600')
 Window = GridEYE_Viewer(root)
 root.mainloop()
