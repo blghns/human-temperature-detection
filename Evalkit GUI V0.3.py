@@ -143,7 +143,7 @@ class GridEYE_Viewer():
         self.kdSearchLabel.grid(row=8, column=1)
 
     def kdSearch(self):
-        self.kdSearchLabel.config(text=kds.getMostSimilar(self.get_tarr()))
+        self.kdSearchLabel.config(text=', '.join(kds.getMostSimilar(self.get_tarr())))
 
     def bruteForceSearch(self):
         self.bruteLabel.config(text=', '.join(bts.getMostSimilar(self.get_tarr())))

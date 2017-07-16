@@ -40,5 +40,6 @@ def getMostSimilar(tarr):
         npArr = np.array(tempArrs)
         tree = KDTree(npArr, leaf_size=2)
         treeConstructed = True
-    queryVal = tree.query(tarr, k=3)
-    return queryVal
+    closenessValues, indices = tree.query([tarr], k=3)
+    names = [cachedData[index]["name"] for index in indices.tolist()[0]]
+    return names
