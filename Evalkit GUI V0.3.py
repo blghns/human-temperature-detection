@@ -14,6 +14,7 @@ from GridEyeKit import GridEYEKit
 # Grid Eye related numbers
 import bruteForceSearch as bts
 import kdNeighborSearch as kds
+import neuralSearch as ns
 
 class GridEYE_Viewer():
 
@@ -137,12 +138,22 @@ class GridEYE_Viewer():
 
         # KD-search
         self.kdSearch = tk.Button(master=self.dataCollectionElements, text='KdSearch', bg='white',
-                                  command=self.kdSearch)
+                                  command=self.kdtSearch)
         self.kdSearch.grid(row=8)
         self.kdSearchLabel = tk.Label(master=self.dataCollectionElements)
         self.kdSearchLabel.grid(row=8, column=1)
 
-    def kdSearch(self):
+        # Neural- Search
+        self.nSearch = tk.Button(master=self.dataCollectionElements, text='NeuralSearch', bg='white',
+                                 command=self.neuralSearch)
+        self.nSearch.grid(row=9)
+        self.nSearchLabel = tk.Label(master=self.dataCollectionElements)
+        self.nSearchLabel.grid(row=9,column=1)
+
+    def neuralSearch(self):
+        self.nSearchLabel.config(text=ns.getMostSimilar(self.get_tarr()))
+
+    def kdtSearch(self):
         self.kdSearchLabel.config(text=', '.join(kds.getMostSimilar(self.get_tarr())))
 
     def bruteForceSearch(self):
