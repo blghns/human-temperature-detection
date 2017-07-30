@@ -16,6 +16,7 @@ import bruteForceSearch as bts
 import kdNeighborSearch as kds
 import neuralSearch as ns
 import cv2
+import perceptronSearch as ps
 
 class GridEYE_Viewer():
 
@@ -58,7 +59,7 @@ class GridEYE_Viewer():
         """Initialize frame tor Elements"""
         self.frameElements = tk.Frame(master=self.tkroot, bg='white')
         self.frameElements.place(x=410, y=5, width = 100, height = 400)
-
+        
 
         self.cap = cv2.VideoCapture(0)
         ret, frame = self.cap.read()
@@ -153,6 +154,16 @@ class GridEYE_Viewer():
         self.nSearch.grid(row=9)
         self.nSearchLabel = tk.Label(master=self.dataCollectionElements)
         self.nSearchLabel.grid(row=9,column=1)
+
+        # Perceptron- Search
+        self.pSearch = tk.Button(master=self.dataCollectionElements, text='PerceptronSearch', bg='white',
+                                 command=self.perceptronSearch)
+        self.pSearch.grid(row=10)
+        self.pSearchLabel = tk.Label(master=self.dataCollectionElements)
+        self.pSearchLabel.grid(row=10, column=1)
+
+    def perceptronSearch(self):
+        self.pSearchLabel.config(text=ps.getMostSimilar(self.get_tarr()))
 
     def neuralSearch(self):
         self.nSearchLabel.config(text=ns.getMostSimilar(self.get_tarr()))
