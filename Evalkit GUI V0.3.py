@@ -15,6 +15,7 @@ from GridEyeKit import GridEYEKit
 import bruteForceSearch as bts
 import kdNeighborSearch as kds
 import neuralSearch as ns
+import cv2
 
 class GridEYE_Viewer():
 
@@ -57,7 +58,10 @@ class GridEYE_Viewer():
         """Initialize frame tor Elements"""
         self.frameElements = tk.Frame(master=self.tkroot, bg='white')
         self.frameElements.place(x=410, y=5, width = 100, height = 400)
-        
+
+
+        self.cap = cv2.VideoCapture(0)
+        ret, frame = self.cap.read()
 
         """Initialize controll buttons"""
         self.buttonStart = tk.Button(master=self.frameElements, text='start', bg='white',

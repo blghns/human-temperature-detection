@@ -1,0 +1,8 @@
+Install the following packges with the corresponding versions.
+Numpy+MKL 1.13.1
+Scikit-learn 0.18.2
+opencv 2.4.13
+pyserial 3.3
+
+For windows, use the installers from
+http://www.lfd.uci.edu/~gohlke/pythonlibs
