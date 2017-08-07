@@ -255,9 +255,13 @@ class GridEYE_Viewer():
     def pause_update(self):
         if self.START:
             self.START = False
+            tarr = self.get_tarr()
+            self.save_get_tarr = self.get_tarr
+            self.get_tarr = lambda: tarr
             self.buttonPause.config(text='resume')
         else:
             self.START = True
+            self.get_tarr = self.save_get_tarr
             self.buttonPause.config(text='pause')
             self.update_tarrpixels()
 
