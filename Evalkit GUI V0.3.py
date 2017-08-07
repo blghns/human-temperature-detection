@@ -144,7 +144,7 @@ class GridEYE_Viewer():
         self.calculateButtonInfoLabel = tk.Label(master=self.dataCollectionElements, text='Results', bg='white')
         self.calculateButtonInfoLabel.grid(row=7, column=1)
 
-        self.checkboxLabel = tk.Label(master=self.dataCollectionElements, text='Is Human?', bg='white')
+        self.checkboxLabel = tk.Label(master=self.dataCollectionElements, text='Is Correct?', bg='white')
         self.checkboxLabel.grid(row=7, column=2)
 
         # Brute Force button
