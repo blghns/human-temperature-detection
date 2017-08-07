@@ -212,7 +212,7 @@ class GridEYE_Viewer():
                           str(self.kdCheckboxVal.get()) + "," +
                           str(self.nSearchCheckboxVal.get()) + "," +
                           str(self.pSearchCheckboxVal.get()) + "," +
-                          ",".join(map(str, self.get_tarr())))
+                          ",".join(map(str, self.get_tarr())) + "\n")
         print "Saved Result"
 
     def perceptronSearch(self):
