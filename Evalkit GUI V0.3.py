@@ -68,6 +68,9 @@ class GridEYE_Viewer():
         self.buttonStart = tk.Button(master=self.frameElements, text='start', bg='white',
                                  command=self.start_update)
         self.buttonStart.pack()
+        self.buttonPause = tk.Button(master=self.frameElements, text='pause', bg='white',
+                                     command=self.pause_update)
+        self.buttonPause.pack()
         self.buttonStop = tk.Button(master=self.frameElements, text='stop', bg='white',
                                  command=self.stop_update)
         self.buttonStop.pack()
@@ -125,7 +128,7 @@ class GridEYE_Viewer():
         self.distanceXEntry.grid(row=5, column=1)
 
         # save
-        self.saveButton = tk.Button(master=self.dataCollectionElements, text='Save', bg='white',
+        self.saveButton = tk.Button(master=self.dataCollectionElements, text='Save Data', bg='white',
                                  command=self.saveData)
         self.saveButton.grid(row=6, column=2)
         # Clear Button
@@ -134,33 +137,82 @@ class GridEYE_Viewer():
         self.clearButton.grid(row=6, column=1)
         self.kit = GridEYEKit()
 
+        # Table Labels
+        self.calculateButtonLabel = tk.Label(master=self.dataCollectionElements, text='Calculate', bg='white')
+        self.calculateButtonLabel.grid(row=7)
+
+        self.calculateButtonInfoLabel = tk.Label(master=self.dataCollectionElements, text='Results', bg='white')
+        self.calculateButtonInfoLabel.grid(row=7, column=1)
+
+        self.checkboxLabel = tk.Label(master=self.dataCollectionElements, text='Correct?', bg='white')
+        self.checkboxLabel.grid(row=7, column=2)
+
         # Brute Force button
         self.bruteForce = tk.Button(master=self.dataCollectionElements, text='Brute', bg='white',
                                     command=self.bruteForceSearch)
-        self.bruteForce.grid(row=7)
+        self.bruteForce.grid(row=8)
         self.bruteLabel = tk.Label(master=self.dataCollectionElements)
-        self.bruteLabel.grid(row=7, column=1)
+        self.bruteLabel.grid(row=8, column=1)
+
+        self.bruteForceCheckboxVal = tk.IntVar()
+        self.bruteForceCheckbox = tk.Checkbutton(master=self.dataCollectionElements, variable=self.bruteForceCheckboxVal)
+        self.bruteForceCheckbox.grid(row=8, column=2)
 
         # KD-search
         self.kdSearch = tk.Button(master=self.dataCollectionElements, text='KdSearch', bg='white',
                                   command=self.kdtSearch)
-        self.kdSearch.grid(row=8)
+        self.kdSearch.grid(row=9)
         self.kdSearchLabel = tk.Label(master=self.dataCollectionElements)
-        self.kdSearchLabel.grid(row=8, column=1)
+        self.kdSearchLabel.grid(row=9, column=1)
+
+        self.kdCheckboxVal = tk.IntVar()
+        self.kdCheckbox = tk.Checkbutton(master=self.dataCollectionElements,
+                                                 variable=self.kdCheckboxVal)
+        self.kdCheckbox.grid(row=9, column=2)
 
         # Neural- Search
         self.nSearch = tk.Button(master=self.dataCollectionElements, text='NeuralSearch', bg='white',
                                  command=self.neuralSearch)
-        self.nSearch.grid(row=9)
+        self.nSearch.grid(row=10)
         self.nSearchLabel = tk.Label(master=self.dataCollectionElements)
-        self.nSearchLabel.grid(row=9,column=1)
+        self.nSearchLabel.grid(row=10, column=1)
+
+        self.nSearchCheckboxVal = tk.IntVar()
+        self.nSearchCheckbox = tk.Checkbutton(master=self.dataCollectionElements,
+                                                 variable=self.nSearchCheckboxVal)
+        self.nSearchCheckbox.grid(row=10, column=2)
 
         # Perceptron- Search
         self.pSearch = tk.Button(master=self.dataCollectionElements, text='PerceptronSearch', bg='white',
                                  command=self.perceptronSearch)
-        self.pSearch.grid(row=10)
+        self.pSearch.grid(row=11)
         self.pSearchLabel = tk.Label(master=self.dataCollectionElements)
-        self.pSearchLabel.grid(row=10, column=1)
+        self.pSearchLabel.grid(row=11, column=1)
+
+        self.pSearchCheckboxVal = tk.IntVar()
+        self.pSearchCheckbox = tk.Checkbutton(master=self.dataCollectionElements,
+                                                 variable=self.pSearchCheckboxVal)
+        self.pSearchCheckbox.grid(row=11, column=2)
+
+        # Save results
+        self.resultDescriptionLabel = tk.Label(master=self.dataCollectionElements, text="Decription: ")
+        self.resultDescriptionLabel.grid(row=12)
+
+        self.resultDescriptionEntry = tk.Entry(master=self.dataCollectionElements)
+        self.resultDescriptionEntry.grid(row=12, column=1)
+
+        self.saveResultButton = tk.Button(master=self.dataCollectionElements, text='Save results', bg='white',
+                                          command=self.saveResults)
+        self.saveResultButton.grid(row=12, column=2)
+
+    def saveResults(self):
+        with open("results.csv", "a") as results:
+            results.write(self.resultDescriptionEntry.get() + "," +
+                          str(self.bruteForceCheckboxVal.get()) + "," +
+                          str(self.kdCheckboxVal.get()) + "," +
+                          str(self.nSearchCheckboxVal.get()) + "," +
+                          str(self.pSearchCheckboxVal.get()) + "," +
+                          ",".join(map(str, self.get_tarr())))
 
     def perceptronSearch(self):
         self.pSearchLabel.config(text=ps.getMostSimilar(self.get_tarr()))
@@ -199,6 +251,14 @@ class GridEYE_Viewer():
         self.START = False
         self.update_tarrpixels()
 
+    def pause_update(self):
+        if self.START:
+            self.START = False
+            self.buttonPause.config(text='resume')
+        else:
+            self.START = True
+            self.buttonPause.config(text='pause')
+            self.update_tarrpixels()
 
     def start_update(self):
         if self.kit.connect():
