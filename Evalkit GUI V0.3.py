@@ -55,7 +55,7 @@ class GridEYE_Viewer():
                 pix.place(x=spacerx+j*(spacerx+pixwidth), y=spacery+i*(pixheight+spacery),  width = pixwidth, height = pixheight)
                 print 
                 self.tarrpixels.append(pix) # attache all pixels to tarrpixel list
-    
+
         """Initialize frame tor Elements"""
         self.frameElements = tk.Frame(master=self.tkroot, bg='white')
         self.frameElements.place(x=410, y=5, width = 100, height = 400)
@@ -204,6 +204,22 @@ class GridEYE_Viewer():
         self.saveResultButton = tk.Button(master=self.dataCollectionElements, text='Save results', bg='white',
                                           command=self.saveResults)
         self.saveResultButton.grid(row=12, column=2)
+
+        # Load tarr
+        self.loadEntry = tk.Entry(master=self.dataCollectionElements)
+        self.loadEntry.grid(row=13, column=1)
+        self.loadEntryButton = tk.Button(master=self.dataCollectionElements, text='Load the data on the left', bg='white',
+                                         command=self.loadData)
+        self.loadEntryButton.grid(row=13, column=2)
+
+    def loadData(self):
+        self.START = True
+        tarr = map(float, self.loadEntry.get().split(','))
+        self.save_get_tarr = self.get_tarr
+        self.get_tarr = lambda: tarr
+        self.update_tarrpixels()
+        self.buttonPause.config(text='resume')
+        self.START = False
 
     def saveResults(self):
         with open("results.csv", "a") as results:
